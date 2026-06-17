@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Calculadora Nutricional{% endblock %}
+
+{% block content %}
+<h1>Calculadora de Alimento y Agua</h1>
+<div class="row">
+    <div class="col-6">
+        <div class="form-group">
+            <label for="geneticLine" class="form-label">Línea genética</label>
+            <input type="text" id="geneticLine" class="form-control" placeholder="Ej. Cobb 500">
+        </div>
+        <div class="form-group">
+            <label for="weeks" class="form-label">Semanas de edad</label>
+            <input type="number" id="weeks" class="form-control" value="4">
+        </div>
+        <div class="form-group">
+            <label for="birds" class="form-label">Cantidad de aves</label>
+            <input type="number" id="birds" class="form-control" value="1000">
+        </div>
+        <button id="calculateBtn" class="btn btn-primary">Calcular</button>
+    </div>
+    <div class="col-6">
+        <div id="result" class="card">
+            <div class="card-body">
+                <h5>Resultados</h5>
+                <p id="feedResult">-</p>
+                <p id="waterResult">-</p>
+                <p id="phaseResult">-</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+{% endblock %}

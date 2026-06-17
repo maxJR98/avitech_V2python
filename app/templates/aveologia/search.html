@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Búsqueda - Aveología{% endblock %}
+
+{% block content %}
+<h1>Buscar enfermedades</h1>
+<div class="form-group">
+    <input type="text" id="searchInput" class="form-control" placeholder="Ej. Newcastle, gripe aviar, secreción nasal...">
+    <button id="searchBtn" class="btn btn-primary mt-2">Buscar</button>
+</div>
+<div id="results" class="row"></div>
+<div id="suggestions" class="mt-2"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/diagnostic.js') }}"></script>
+{% endblock %}

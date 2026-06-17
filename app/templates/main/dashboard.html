@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AVITECH{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p>Bienvenido, {{ current_user.username }}. Aquí puedes ver el resumen de tu actividad.</p>
+<div class="row">
+    <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>Pedidos activos</h5>
+                <p class="text-muted">0</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>Productos en carrito</h5>
+                <p class="text-muted">{{ request.cookies.get('cart_count', 0) }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

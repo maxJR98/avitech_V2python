@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Diagnóstico - Aveología{% endblock %}
+
+{% block content %}
+<h1>Diagnóstico por síntomas</h1>
+<div class="form-group">
+    <label>Ingresa los síntomas separados por comas:</label>
+    <input type="text" id="symptomsInput" class="form-control" placeholder="Ej. secreción nasal, decaimiento, diarrea">
+    <button id="diagnosticBtn" class="btn btn-primary mt-2">Diagnosticar</button>
+</div>
+<div id="diagnosticResults" class="row"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/diagnostic.js') }}"></script>
+{% endblock %}

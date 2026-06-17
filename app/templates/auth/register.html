@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Registro - AVITECH{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-box glass-strong">
+            <div class="auth-logo">
+                <i class="fas fa-dove"></i>
+                <h1><strong>AVI</strong>TECH</h1>
+                <p>Crea tu cuenta y comienza</p>
+            </div>
+            <form method="post" class="auth-form">
+                <h2>Registro</h2>
+                <p class="text-muted">Únete a la revolución avícola digital.</p>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="username" class="form-label">Usuario</label>
+                            <div class="input-group">
+                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Ej: avicultor2025" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="email" class="form-label">Correo electrónico</label>
+                            <div class="input-group">
+                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="tu@email.com" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="input-group">
+                        <span class="input-icon"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Mínimo 8 caracteres" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar contraseña">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">Confirmar contraseña</label>
+                    <div class="input-group">
+                        <span class="input-icon"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Repite la contraseña" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </button>
+                <div class="auth-divider"><span>¿Ya tienes cuenta?</span></div>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline w-full">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                </a>
+                <div class="auth-footer">
+                    <a href="{{ url_for('main.index') }}"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

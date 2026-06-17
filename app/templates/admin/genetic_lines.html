@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Líneas Genéticas - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Líneas Genéticas</h1>
+    <a href="{{ url_for('admin.create_genetic_line') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva línea</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in genetic_lines %}
+            <tr>
+                <td>{{ line.id }}</td>
+                <td>{{ line.name }}</td>
+                <td>{{ line.description or '-' }}</td>
+                <td>
+                    <a href="{{ url_for('admin.edit_genetic_line', id=line.id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                    <form action="{{ url_for('admin.delete_genetic_line', id=line.id) }}" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar esta línea genética?')">
+                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

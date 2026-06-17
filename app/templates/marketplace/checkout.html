@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - AVITECH{% endblock %}
+
+{% block content %}
+<h1>Finalizar Pedido</h1>
+<form method="post">
+    <div class="form-group">
+        <label for="branch_id" class="form-label">Sucursal</label>
+        <select name="branch_id" id="branch_id" class="form-control" required>
+            <option value="">Selecciona una sucursal</option>
+            {% for branch in branches %}
+                <option value="{{ branch.id }}">{{ branch.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Tipo de entrega</label>
+        <div>
+            <label><input type="radio" name="delivery_type" value="pickup" checked> Recoger en sucursal</label>
+            <label><input type="radio" name="delivery_type" value="delivery"> Delivery</label>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Confirmar pedido</button>
+</form>
+{% endblock %}

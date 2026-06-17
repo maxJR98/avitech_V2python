@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Editar' if line else 'Nueva' }} Línea Genética{% endblock %}
+
+{% block content %}
+<h1>{{ 'Editar' if line else 'Nueva' }} Línea Genética</h1>
+<form method="post" class="row g-3">
+    <div class="col-12">
+        <label for="name" class="form-label">Nombre *</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ line.name if line else '' }}" required>
+    </div>
+    <div class="col-12">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea class="form-control" id="description" name="description" rows="3">{{ line.description if line else '' }}</textarea>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{{ url_for('admin.list_genetic_lines') }}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

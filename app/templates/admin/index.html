@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Panel de Administración{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Panel de Administración</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card text-center bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Usuarios</h5>
+                <h2>{{ total_users or 0 }}</h2>
+                <a href="#" class="btn btn-light btn-sm">Ver</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Productos</h5>
+                <h2>{{ total_products or 0 }}</h2>
+                <a href="{{ url_for('admin.list_products') }}" class="btn btn-light btn-sm">Gestionar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title">Sucursales</h5>
+                <h2>{{ total_branches or 0 }}</h2>
+                <a href="{{ url_for('admin.list_branches') }}" class="btn btn-light btn-sm">Gestionar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center bg-warning text-white">
+            <div class="card-body">
+                <h5 class="card-title">Pedidos</h5>
+                <h2>{{ total_orders or 0 }}</h2>
+                <a href="#" class="btn btn-light btn-sm">Ver</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                Enfermedades
+                <a href="{{ url_for('admin.create_disease') }}" class="btn btn-primary btn-sm float-end">+ Agregar</a>
+            </div>
+            <div class="card-body">
+                <p>Total: {{ total_diseases or 0 }}</p>
+                <a href="{{ url_for('admin.list_diseases') }}" class="btn btn-outline-secondary btn-sm">Ver todas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                Líneas Genéticas
+                <a href="{{ url_for('admin.create_genetic_line') }}" class="btn btn-primary btn-sm float-end">+ Agregar</a>
+            </div>
+            <div class="card-body">
+                <p>Total: {{ total_genetic_lines or 0 }}</p>
+                <a href="{{ url_for('admin.list_genetic_lines') }}" class="btn btn-outline-secondary btn-sm">Ver todas</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

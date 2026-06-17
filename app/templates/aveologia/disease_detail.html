@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ disease.name }} - Aveología{% endblock %}
+
+{% block content %}
+<h1>{{ disease.name }}</h1>
+<p><strong>Nombre científico:</strong> {{ disease.scientific_name or 'No especificado' }}</p>
+<p>{{ disease.description }}</p>
+<h3>Tratamiento</h3>
+<p>{{ disease.treatment or 'No especificado' }}</p>
+<h3>Prevención</h3>
+<p>{{ disease.prevention or 'No especificado' }}</p>
+<a href="{{ url_for('aveologia.search') }}" class="btn btn-secondary">Volver</a>
+{% endblock %}

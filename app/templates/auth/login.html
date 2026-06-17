@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar sesión - AVITECH{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-box glass-strong">
+            <div class="auth-logo">
+                <i class="fas fa-dove"></i>
+                <h1><strong>AVI</strong>TECH</h1>
+                <p>Plataforma de gestión avícola</p>
+            </div>
+            <form method="post" class="auth-form">
+                <h2>Iniciar sesión</h2>
+                <p class="text-muted">Accede a tu cuenta para gestionar tu negocio.</p>
+                <div class="form-group">
+                    <label for="username" class="form-label">Usuario o correo</label>
+                    <div class="input-group">
+                        <span class="input-icon"><i class="fas fa-user"></i></span>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Usuario o correo electrónico" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="input-group">
+                        <span class="input-icon"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                        <button type="button" class="toggle-password" aria-label="Mostrar contraseña">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember"> Recordarme
+                    </label>
+                    <a href="#" class="link-primary">¿Olvidaste tu contraseña?</a>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                </button>
+                <div class="auth-divider"><span>¿No tienes cuenta?</span></div>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-outline w-full">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </a>
+                <div class="auth-footer">
+                    <a href="{{ url_for('main.index') }}"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
