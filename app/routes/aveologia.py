@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify
 from sqlalchemy import or_
-from app.models import Disease  
+from app.models import Disease
 from app.services.diagnostic_service import suggest_correction
 
 aveologia_bp = Blueprint('aveologia', __name__, template_folder='../templates/aveologia')
