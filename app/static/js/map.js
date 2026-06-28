@@ -2,7 +2,7 @@ let map;
 let marker;
 
 function initMap() {
-    const defaultPos = { lat: -17.3895, lng: -66.1568 }; // Ejemplo: Cochabamba
+    const defaultPos = { lat: -17.3895, lng: -66.1568 };
     map = new google.maps.Map(document.getElementById('map'), {
         center: defaultPos,
         zoom: 13

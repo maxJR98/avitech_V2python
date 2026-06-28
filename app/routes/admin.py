@@ -25,6 +25,13 @@ def index():
                            total_diseases=total_diseases,
                            total_genetic_lines=total_genetic_lines)
 
+@admin_bp.route('/users')
+@login_required
+@admin_required
+def list_users():
+    users = User.query.all()
+    return render_template('admin/users.html', users=users)
+
 @admin_bp.route('/products')
 @login_required
 @admin_required

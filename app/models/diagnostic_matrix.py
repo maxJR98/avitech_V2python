@@ -6,8 +6,8 @@ class DiagnosticMatrix(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     disease_id = db.Column(db.Integer, db.ForeignKey('diseases.id'), nullable=False)
     symptom_id = db.Column(db.Integer, db.ForeignKey('symptoms.id'), nullable=False)
-    weight = db.Column(db.Float, nullable=False, default=1.0)  # factor de relevancia
-
+    weight = db.Column(db.Float, nullable=False, default=1.0) 
+    
     # Índice compuesto
     __table_args__ = (
         db.UniqueConstraint('disease_id', 'symptom_id', name='uq_disease_symptom'),

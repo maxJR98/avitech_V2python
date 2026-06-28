@@ -10,10 +10,9 @@ class Disease(db.Model):
     description = db.Column(db.Text)
     treatment = db.Column(db.Text)
     prevention = db.Column(db.Text)
-    keywords = db.Column(db.String(500))  # palabras clave para búsqueda full-text
+    keywords = db.Column(db.String(500))  
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # Relaciones
     symptoms = db.relationship('Symptom', secondary='diagnostic_matrix', backref='diseases')
 
     def __repr__(self):

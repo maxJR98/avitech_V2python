@@ -13,7 +13,7 @@
             <div class="card-body">
                 <h5 class="card-title">Usuarios</h5>
                 <h2>{{ total_users or 0 }}</h2>
-                <a href="#" class="btn btn-light btn-sm">Ver</a>
+                <a href="{{ url_for('admin.list_users') }}" class="btn btn-light btn-sm">Ver</a>
             </div>
         </div>
     </div>

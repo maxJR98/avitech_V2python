@@ -8,10 +8,10 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     branch_id = db.Column(db.Integer, db.ForeignKey('branches.id'), nullable=False)
     order_date = db.Column(db.DateTime, default=datetime.utcnow)
-    status = db.Column(db.String(50), default='pending')  # pending, confirmed, shipped, delivered, cancelled
-    delivery_type = db.Column(db.String(20), nullable=False)  # 'pickup' o 'delivery'
-    delivery_address = db.Column(db.String(255), nullable=True)  # para delivery
-    verification_code = db.Column(db.String(20), unique=True, nullable=True)  # para pickup
+    status = db.Column(db.String(50), default='pending') 
+    delivery_type = db.Column(db.String(20), nullable=False) 
+    delivery_address = db.Column(db.String(255), nullable=True)  
+    verification_code = db.Column(db.String(20), unique=True, nullable=True) 
     total_amount = db.Column(db.Float, nullable=False)
     shipping_cost = db.Column(db.Float, default=0.0)
     notes = db.Column(db.Text)

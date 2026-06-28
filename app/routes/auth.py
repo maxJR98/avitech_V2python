@@ -65,12 +65,11 @@ def register():
             
         password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
         
-        # Guardamos usando las nuevas columnas e inyectamos un rol por defecto
         user = Usuarios(
             nombre_completo=username, 
             email=email, 
             password_hash=password_hash,
-            id_rol=2  # Asumimos que 2 es el rol por defecto de usuario.
+            id_rol=2  
         )
         
         db.session.add(user)

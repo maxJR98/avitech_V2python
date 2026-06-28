@@ -7,7 +7,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     description = db.Column(db.Text)
-    category = db.Column(db.String(100))  # ej. 'alimento', 'medicamento', 'equipo'
+    category = db.Column(db.String(100))  
     price = db.Column(db.Float, nullable=False)
     image_url = db.Column(db.String(255))
     is_active = db.Column(db.Boolean, default=True)
