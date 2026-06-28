@@ -9,10 +9,13 @@
         <div class="col-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.description[:100] }}</p>
-                    <p class="text-primary font-weight-bold">${{ product.price }}</p>
-                    <a href="{{ url_for('marketplace.product_detail', product_id=product.id) }}" class="btn btn-primary btn-sm">Ver detalle</a>
+                    <h5 class="card-title">{{ product.nombre_producto }}</h5>
+                    
+                    <p class="card-text">{{ product.descripcion_corta[:100] }}</p>
+                    
+                    <p class="text-primary font-weight-bold">${{ product.precio_unitario }}</p>
+                    
+                    <a href="{{ url_for('marketplace.product_detail', product_id=product.id_producto) }}" class="btn btn-primary btn-sm">Ver detalle</a>
                 </div>
             </div>
         </div>

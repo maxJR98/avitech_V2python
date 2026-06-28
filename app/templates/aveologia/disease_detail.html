@@ -3,12 +3,30 @@
 {% block title %}{{ disease.name }} - Aveología{% endblock %}
 
 {% block content %}
-<h1>{{ disease.name }}</h1>
-<p><strong>Nombre científico:</strong> {{ disease.scientific_name or 'No especificado' }}</p>
-<p>{{ disease.description }}</p>
-<h3>Tratamiento</h3>
-<p>{{ disease.treatment or 'No especificado' }}</p>
-<h3>Prevención</h3>
-<p>{{ disease.prevention or 'No especificado' }}</p>
-<a href="{{ url_for('aveologia.search') }}" class="btn btn-secondary">Volver</a>
+<div class="card glass mt-4">
+    <div class="card-body">
+        <h1>{{ disease.name }}</h1>
+        <p><strong>Nombre científico:</strong> <em>{{ disease.scientific_name or 'No especificado' }}</em></p>
+
+        <hr>
+
+        <p>{{ disease.description }}</p>
+
+        <h3 class="mt-4 text-primary">Tratamiento</h3>
+        {% if disease.treatment %}
+            <p>{{ disease.treatment }}</p>
+        {% else %}
+            <p class="text-muted">No hay tratamientos registrados para esta enfermedad en este momento.</p>
+        {% endif %}
+
+        <h3 class="mt-4 text-primary">Prevención</h3>
+        <p>{{ disease.prevention or 'No especificado' }}</p>
+
+        <div class="mt-4">
+            <a href="{{ url_for('aveologia.search') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver a buscar
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

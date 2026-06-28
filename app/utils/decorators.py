@@ -14,9 +14,15 @@ def login_required(f):
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not current_user.is_authenticated or not current_user.is_admin:
+
+        if not current_user.is_authenticated:
+            flash('Por favor inicia sesión.', 'warning')
+            return redirect(url_for('auth.login'))
+            
+        if current_user.id_rol not in [1, 3]:
             flash('No tienes permisos de administrador.', 'danger')
             return redirect(url_for('main.index'))
+            
         return f(*args, **kwargs)
     return decorated_function
 

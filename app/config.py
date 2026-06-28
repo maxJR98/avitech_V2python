@@ -3,11 +3,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Obtenemos la ruta absoluta de la carpeta principal del proyecto (avitech)
+basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
     
-    # Ruta ABSOLUTA con espacios codificados como %20
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///C:/avitech/instance/avitech.db'
+    # Conexión dinámica a SQLite para que el sistema AVITECH sea 100% portátil
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'avitech_portable.db')
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SESSION_COOKIE_SECURE = True if os.environ.get('PRODUCTION') else False
@@ -25,5 +28,6 @@ class ProductionConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    # Para los tests automáticos es buena práctica dejar SQLite en memoria
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:' 
     WTF_CSRF_ENABLED = False

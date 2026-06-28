@@ -1,12 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const toggler = document.getElementById('navbarToggler');
-    const menu = document.getElementById('navbarMenu');
-    if (toggler && menu) {
-        toggler.addEventListener('click', function() {
-            menu.classList.toggle('active');
-        });
-    }
-
+   
     const togglePasswordButtons = document.querySelectorAll('.toggle-password');
     togglePasswordButtons.forEach(function(button) {
         button.addEventListener('click', function() {

@@ -1,6 +1,5 @@
-instance/*.db 
-__pycache__/ 
-*.pyc 
-migrations/ 
-.env 
-logs/ 
+.venv
+avitech_portable.db
+*db
+__pycache__/
+.env

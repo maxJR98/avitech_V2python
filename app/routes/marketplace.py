@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, jsonify, request, session
+from flask import Blueprint, render_template, jsonify, request, session, flash, redirect, url_for
 from flask_login import login_required, current_user
 from app.extensions import db
-from app.models import Product, Branch, Stock, Order, OrderItem
+# Actualizamos los modelos a los nombres generados por la base de datos MySQL
+from app.models.modelos_db import Productos, Sucursales, InventarioSucursal, Pedidos, DetallePedido
 from app.services.inventory_service import check_stock, reserve_stock
 from app.services.location_service import get_nearby_branches
 import uuid
@@ -10,21 +11,23 @@ marketplace_bp = Blueprint('marketplace', __name__, template_folder='../template
 
 @marketplace_bp.route('/')
 def products():
-    products = Product.query.filter_by(is_active=True).all()
-    branches = Branch.query.filter_by(is_active=True).all()
+    # Usamos 'activo=1' en lugar de 'is_active=True'
+    products = Productos.query.filter_by(activo=1).all()
+    branches = Sucursales.query.filter_by(activo=1).all()
     return render_template('products.html', products=products, branches=branches)
 
 @marketplace_bp.route('/product/<int:product_id>')
 def product_detail(product_id):
-    product = Product.query.get_or_404(product_id)
-    branches = Branch.query.filter_by(is_active=True).all()
+    product = Productos.query.get_or_404(product_id)
+    branches = Sucursales.query.filter_by(activo=1).all()
     stock_info = []
     for branch in branches:
-        stock = Stock.query.filter_by(product_id=product_id, branch_id=branch.id).first()
+        # Usamos InventarioSucursal y sus columnas correspondientes
+        stock = InventarioSucursal.query.filter_by(id_producto=product_id, id_sucursal=branch.id_sucursal).first()
         stock_info.append({
-            'branch_id': branch.id,
-            'branch_name': branch.name,
-            'quantity': stock.quantity if stock else 0
+            'branch_id': branch.id_sucursal,
+            'branch_name': branch.nombre_sucursal,
+            'quantity': stock.cantidad_disponible if stock else 0
         })
     return render_template('product_detail.html', product=product, stock_info=stock_info)
 
@@ -41,16 +44,20 @@ def add_to_cart():
     product_id = data.get('product_id')
     branch_id = data.get('branch_id')
     quantity = data.get('quantity', 1)
+    
     if not product_id or not branch_id:
         return jsonify({'error': 'Faltan datos'}), 400
     if not check_stock(product_id, branch_id, quantity):
         return jsonify({'error': 'Stock insuficiente'}), 400
+        
     cart = session.get('cart', {})
     key = f"{product_id}_{branch_id}"
+    
     if key in cart:
         cart[key]['quantity'] += quantity
     else:
         cart[key] = {'product_id': product_id, 'branch_id': branch_id, 'quantity': quantity}
+        
     session['cart'] = cart
     return jsonify({'message': 'Producto agregado', 'cart': cart})
 
@@ -67,10 +74,11 @@ def cart():
     items = []
     total = 0
     for key, item in cart_data.items():
-        product = Product.query.get(item['product_id'])
+        product = Productos.query.get(item['product_id'])
         if product:
-            branch = Branch.query.get(item['branch_id'])
-            subtotal = product.price * item['quantity']
+            branch = Sucursales.query.get(item['branch_id'])
+            # Usamos precio_unitario en lugar de price
+            subtotal = product.precio_unitario * item['quantity']
             total += subtotal
             items.append({
                 'key': key,
@@ -99,45 +107,64 @@ def checkout():
         branch_id = request.form.get('branch_id')
         delivery_type = request.form.get('delivery_type')
         cart = session.get('cart', {})
+        
         if not cart:
             flash('El carrito está vacío.', 'danger')
             return redirect(url_for('marketplace.cart'))
+            
         total = 0
         items = []
         for key, item in cart.items():
-            product = Product.query.get(item['product_id'])
+            product = Productos.query.get(item['product_id'])
             if not product:
                 continue
-            subtotal = product.price * item['quantity']
+            subtotal = product.precio_unitario * item['quantity']
             total += subtotal
             items.append(item)
-        order = Order(
-            user_id=current_user.id,
-            branch_id=branch_id,
-            delivery_type=delivery_type,
-            total_amount=total,
-            shipping_cost=0.0
+            
+        # Asignar ID de método de entrega basado en la DB (1=Recojo, 2/3=Delivery)
+        id_metodo = 1 if delivery_type == 'pickup' else 2
+        
+        # Generar un número de pedido único requerido por la DB
+        num_pedido = f"PED-{str(uuid.uuid4())[:6].upper()}"
+        
+        order = Pedidos(
+            numero_pedido=num_pedido,
+            id_cliente=current_user.id_usuario, # Asegúrate de que flask_login use id_usuario
+            id_sucursal=branch_id,
+            id_estado=1, # 1 = Pendiente según tus seeds
+            id_metodo_entrega=id_metodo,
+            subtotal=total,
+            costo_envio=0.0,
+            total=total
         )
+        
         if delivery_type == 'pickup':
-            order.verification_code = str(uuid.uuid4())[:8].upper()
+            order.notas_cliente = f"Código de verificación: {str(uuid.uuid4())[:8].upper()}"
+            
         db.session.add(order)
-        db.session.flush()
+        db.session.flush() # Para obtener el id_pedido generado
+        
         for item in items:
-            order_item = OrderItem(
-                order_id=order.id,
-                product_id=item['product_id'],
-                quantity=item['quantity'],
-                unit_price=Product.query.get(item['product_id']).price,
-                subtotal=Product.query.get(item['product_id']).price * item['quantity']
+            prod = Productos.query.get(item['product_id'])
+            order_item = DetallePedido(
+                id_pedido=order.id_pedido,
+                id_producto=item['product_id'],
+                cantidad=item['quantity'],
+                precio_unitario=prod.precio_unitario,
+                subtotal=prod.precio_unitario * item['quantity']
             )
             db.session.add(order_item)
+            
             if not reserve_stock(item['product_id'], item['branch_id'], item['quantity']):
                 db.session.rollback()
                 flash('Error al reservar stock.', 'danger')
                 return redirect(url_for('marketplace.cart'))
+                
         db.session.commit()
         session.pop('cart', None)
         flash('Pedido realizado con éxito.', 'success')
         return redirect(url_for('main.dashboard'))
-    branches = Branch.query.filter_by(is_active=True).all()
+        
+    branches = Sucursales.query.filter_by(activo=1).all()
     return render_template('checkout.html', branches=branches)

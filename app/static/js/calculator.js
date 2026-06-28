@@ -3,11 +3,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const geneticLine = document.getElementById('geneticLine').value.trim();
         const weeks = parseInt(document.getElementById('weeks').value);
         const birds = parseInt(document.getElementById('birds').value);
+        
         if (!geneticLine || !weeks || !birds) {
             alert('Completa todos los campos.');
             return;
         }
-        fetch('/api/calculate', {
+
+        fetch('/calculadora/api/calculate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ genetic_line: geneticLine, weeks: weeks, birds: birds })

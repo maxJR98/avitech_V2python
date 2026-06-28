@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Mi Perfil - AVITECH{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card glass">
+            <div class="card-header text-center">
+                <h3><i class="fas fa-id-card text-primary"></i> Mi Perfil</h3>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-user-circle text-secondary" style="font-size: 5rem;"></i>
+                </div>
+                <h4 class="text-center">{{ current_user.nombre_completo }}</h4>
+                <p class="text-center text-muted">{{ current_user.email }}</p>
+                <hr>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <p><strong>Rol en el sistema:</strong><br> 
+                            {% if current_user.id_rol == 1 %}Administrador{% elif current_user.id_rol == 3 %}Encargado{% else %}Cliente{% endif %}
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p><strong>Estado:</strong><br> 
+                            <span class="badge badge-success">Cuenta Activa</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

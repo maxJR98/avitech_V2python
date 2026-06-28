@@ -18,10 +18,10 @@
             <label for="birds" class="form-label">Cantidad de aves</label>
             <input type="number" id="birds" class="form-control" value="1000">
         </div>
-        <button id="calculateBtn" class="btn btn-primary">Calcular</button>
+        <button id="calculateBtn" class="btn btn-primary mt-3">Calcular</button>
     </div>
     <div class="col-6">
-        <div id="result" class="card">
+        <div id="result" class="card text-white" style="background-color: rgba(255, 255, 255, 0.1);">
             <div class="card-body">
                 <h5>Resultados</h5>
                 <p id="feedResult">-</p>
@@ -34,5 +34,43 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('calculateBtn').addEventListener('click', function() {
+        const geneticLine = document.getElementById('geneticLine').value.trim();
+        const weeks = parseInt(document.getElementById('weeks').value);
+        const birds = parseInt(document.getElementById('birds').value);
+        
+        if (!geneticLine || !weeks || !birds) {
+            alert('Completa todos los campos.');
+            return;
+        }
+        
+        fetch('/calculadora/api/calculate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ genetic_line: geneticLine, weeks: weeks, birds: birds })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Error en el servidor');
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                document.getElementById('feedResult').textContent = 'Error: ' + data.error;
+                document.getElementById('waterResult').textContent = '';
+                document.getElementById('phaseResult').textContent = '';
+                return;
+            }
+            document.getElementById('feedResult').textContent = 'Alimento diario: ' + data.daily_feed_kg + ' kg';
+            document.getElementById('waterResult').textContent = 'Agua diaria: ' + data.daily_water_l + ' L';
+            document.getElementById('phaseResult').textContent = 'Fase recomendada: ' + (data.feed_phase || 'No especificada');
+        })
+        .catch(error => {
+            document.getElementById('feedResult').textContent = 'Hubo un error. Revisa la terminal de Python.';
+            console.error(error);
+        });
+    });
+});
+</script>
 {% endblock %}

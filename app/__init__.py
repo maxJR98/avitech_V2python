@@ -1,6 +1,7 @@
 from flask import Flask
 from app.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from app.extensions import db, migrate, login_manager, bcrypt, cors
+from app.models.modelos_db import Usuarios
 import os
 
 def create_app(config_class=None):
@@ -30,7 +31,7 @@ def create_app(config_class=None):
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        return Usuarios.query.get(int(user_id))
 
     from app.routes.auth import auth_bp
     from app.routes.main import main_bp
