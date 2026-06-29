@@ -1,3 +1,5 @@
 .venv
+*.db
+avitech_portable.db
 __pycache__/
 .env
